@@ -1,24 +1,26 @@
 $schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
 name: Basic Content
-status: obsolete
+status: stable
 description: Component for general HTML content with configurable container options
 props:
   type: object
   properties:
     theme:
-      type: string
+      type: ['string', 'null']
       title: Theme
       description: Theme variation (light or dark).
       enum:
         - light
         - dark
+      examples:
+        - light
     is_contained:
-      type: boolean
+      type: ['boolean', 'null']
       title: Contained
       description: Whether to wrap the content in a container.
       default: true
     vertical_spacing:
-      type: string
+      type: ['string', 'null']
       title: Vertical spacing
       description: Vertical spacing position (top, bottom, both).
       enum:
@@ -26,12 +28,11 @@ props:
         - bottom
         - both
     with_background:
-      type: boolean
+      type: ['boolean', 'null']
       title: With background
       description: Whether to display with a background.
-
     modifier_class:
-      type: string
+      type: ['string', 'null']
       title: Modifier classes
       description: Additional CSS classes.
 slots:

@@ -1,18 +1,16 @@
 {#
 /**
  * @file
- * CivicTheme Basic Content component.
+ * CivicTheme Basic Content component (SDC/Experience Builder compatible).
  *
  * Props:
- * - theme: [string] Theme variation (light or dark).
- * - is_contained: [boolean] Whether to wrap the content in a container.
- * - vertical_spacing: [string] Vertical spacing position (top, bottom, both).
- * - with_background: [boolean] Whether to display with a background.
- * - attributes: [string] Additional HTML attributes.
- * - modifier_class: [string] Additional CSS classes.
- *
- * Slots:
- * - content: HTML content.
+ * - theme: [string|null] Theme variation (light or dark).
+ * - is_contained: [boolean|null] Whether to wrap the content in a container.
+ * - vertical_spacing: [string|null] Vertical spacing position (top, bottom, both).
+ * - with_background: [boolean|null] Whether to display with a background.
+ * - attributes: [string|null] Additional HTML attributes.
+ * - modifier_class: [string|null] Additional CSS classes.
+ * - content: [string|null] HTML content.
  */
 #}
 
@@ -30,7 +28,7 @@
       <div class="row">
         <div class="col-xxs-12">
           {% endif %}
-          {{- content|raw -}}
+          {{ content }}
           {% if is_contained %}
         </div>
       </div>
