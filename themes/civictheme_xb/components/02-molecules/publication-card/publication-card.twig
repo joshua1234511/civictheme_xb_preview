@@ -1,22 +1,22 @@
 {#
 /**
  * @file
- * CivicTheme Publication Card component.
+ * CivicTheme Publication Card component (SDC/Experience Builder compatible).
  *
  * Props:
- * - theme: [string] Theme variation (light or dark).
- * - attributes: [string] Additional HTML attributes.
- * - modifier_class: [string] Additional CSS classes.
- * - image: [object] Card image.
- *   Each property contains:
- *   - url: [string] Image URL.
- *   - alt: [string] Image alt text.
- * - file: [object] File object for download.
- *   Each property contains:
- *   - name: [string] File name.
- *   - url: [string] File URL.
- *   - ext: [string] File extension.
- *   - size: [string] File size.
+ * - theme: [string|null] Theme variation (light or dark).
+ * - attributes: [string|null] Additional HTML attributes.
+ * - modifier_class: [string|null] Additional CSS classes.
+ * - image: [object|null] Card image (Experience Builder ref).
+ *   - url: [string|null] Image URL.
+ *   - alt: [string|null] Image alt text.
+ * - file_name: [string|null] File name for download.
+ * - file_url: [string|null] File download URL.
+ * - file_ext: [string|null] File extension.
+ * - file_size: [string|null] File size.
+ * - link_url: [string|null] Link URL.
+ * - link_is_new_window: [boolean|null] Whether to open the link in a new window.
+ * - modifier_class: [string|null] Additional CSS classes.
  *
  * Slots:
  * - image_over: Image overlay content.
@@ -38,55 +38,47 @@
  */
 #}
 
-{% set with_image = image.url is not empty %}
+{% set with_image = image.src is not empty %}
 {% set with_image_class = with_image ? 'ct-publication-card--with-image' : '' %}
 {% set theme_class = 'ct-theme-%s'|format(theme|default('light')) %}
 {% set modifier_class = '%s %s %s'|format(theme_class, with_image_class, modifier_class|default('')) %}
 
-{% if file is not empty %}
+{% if title is not empty %}
   <div class="ct-publication-card {{ modifier_class -}}" {% if attributes is not empty %}{{- attributes|raw -}}{% endif %}>
-    {% block image_block %}
-      {% if image.url is not empty %}
+    {% if with_image or image_over is not empty %}
         <div class="ct-publication-card__image">
           {% include 'civictheme_xb:image' with {
             theme: theme,
-            url: image.url,
-            alt: image.alt,
+          image: image,
           } only %}
-
-          {% block image_over_block %}
             {% if image_over is not empty %}
               <div class="ct-publication-card__image__over">
                 {{ image_over }}
               </div>
             {% endif %}
-          {% endblock %}
         </div>
       {% endif %}
-    {% endblock %}
-
     <div class="ct-publication-card__content">
-      {% block content_top_block %}
         {% if content_top is not empty %}
           <div class="ct-publication-card__content-top">
-            {{- content_top|raw -}}
+          {{ content_top }}
           </div>
         {% endif %}
-      {% endblock %}
-
-      {% block title_block %}
         {% if title is not empty %}
           {% set title_content %}
+          {% if file_url is not empty %}
             {% include 'civictheme_xb:link' with {
               theme: theme,
               text: title,
-              url: file.url,
+              url: file_url,
               icon: 'download',
               icon_group_disabled: true,
               modifier_class: 'ct-publication-card__title__link',
             } only %}
+          {% else %}
+            {{ title }}
+          {% endif %}
           {% endset %}
-
           {% include 'civictheme_xb:heading' with {
             content: title_content,
             level: 4,
@@ -94,17 +86,11 @@
             modifier_class: 'ct-publication-card__title',
           } only %}
         {% endif %}
-      {% endblock %}
-
-      {% block content_middle_block %}
         {% if content_middle is not empty %}
-          <div class="ct-publication-card__content__middle">
-            {{- content_middle|raw -}}
+        <div class="ct-publication-card__content-middle">
+          {{ content_middle }}
           </div>
         {% endif %}
-      {% endblock %}
-
-      {% block summary_block %}
         {% if summary is not empty %}
           {% include 'civictheme_xb:paragraph' with {
             theme: theme,
@@ -113,31 +99,26 @@
             modifier_class: 'ct-publication-card__summary',
           } only %}
         {% endif %}
-      {% endblock %}
-
-      {% block link_block %}
-        {% if file.ext is not empty and file.size is not empty %}
-          {% set extension = ' <span class="ct-publication-card__link__extension">(%s, %s)</span>'|format(file.ext, file.size) %}
-        {% elseif file.ext is not empty or file.size is not empty %}
-          {% set extension = ' <span class="ct-publication-card__link__extension">(%s)</span>'|format(file.ext|default(file.size)) %}
+      {% if file_name is not empty and file_url is not empty %}
+        {% set extension = '' %}
+        {% if file_ext is not empty and file_size is not empty %}
+          {% set extension = ' <span class="ct-publication-card__link__extension">(%s, %s)</span>'|format(file_ext, file_size) %}
+        {% elseif file_ext is not empty or file_size is not empty %}
+          {% set extension = ' <span class="ct-publication-card__link__extension">(%s)</span>'|format(file_ext|default(file_size)) %}
         {% endif %}
-
         {% include 'civictheme_xb:link' with {
           theme: theme,
-          text: file.name ~ extension,
-          title: 'Download %s'|format(file.name),
-          url: file.url,
-          modifier_class: 'ct-publication-card__link'
+          text: file_name ~ extension,
+          title: 'Download %s'|format(file_name),
+          url: file_url,
+          modifier_class: 'ct-publication-card__link',
         } only %}
-      {% endblock %}
-
-      {% block content_bottom_block %}
+      {% endif %}
         {% if content_bottom is not empty %}
           <div class="ct-publication-card__content-bottom">
-            {{- content_bottom|raw -}}
+          {{ content_bottom }}
           </div>
         {% endif %}
-      {% endblock %}
     </div>
   </div>
 {% endif %}

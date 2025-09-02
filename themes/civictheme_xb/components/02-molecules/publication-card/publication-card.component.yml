@@ -1,56 +1,53 @@
 $schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
 name: Publication Card
-status: obsolete
+status: stable
 description: Card component for displaying publication information with downloadable file
 props:
   type: object
   properties:
     theme:
-      type: string
+      type: ['string', 'null']
       title: Theme
       description: Theme variation (light or dark).
       enum:
         - light
         - dark
-
+      examples:
+        - light
+    image:
+      $ref: json-schema-definitions://experience_builder.module/image
+      type: ['object', 'null']
+      title: Image
+    file_name:
+      type: ['string', 'null']
+      title: File Name
+      description: File name for download.
+    file_url:
+      type: ['string', 'null']
+      format: uri
+      title: File URL
+      description: File download URL.
+    file_ext:
+      type: ['string', 'null']
+      title: File Extension
+      description: File extension.
+    file_size:
+      type: ['string', 'null']
+      title: File Size
+      description: File size.
+    link_url:
+      type: ['string', 'null']
+      format: uri
+      title: URL
+      description: Link URL.
+    link_is_new_window:
+      type: ['boolean', 'null']
+      title: New Window
+      description: Whether to open the link in a new window.
     modifier_class:
-      type: string
+      type: ['string', 'null']
       title: Modifier Class
       description: Additional CSS classes.
-    image:
-      type: object
-      title: Image
-      description: Card image.
-      properties:
-        url:
-          type: string
-          title: URL
-          description: Image URL.
-        alt:
-          type: string
-          title: Alt text
-          description: Image alt text.
-    file:
-      type: object
-      title: File
-      description: File object for download.
-      properties:
-        name:
-          type: string
-          title: Name
-          description: File name.
-        url:
-          type: string
-          title: URL
-          description: File URL.
-        ext:
-          type: string
-          title: Extension
-          description: File extension.
-        size:
-          type: string
-          title: Size
-          description: File size.
 slots:
   image_over:
     title: Image Over
