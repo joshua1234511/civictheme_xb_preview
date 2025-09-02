@@ -1,45 +1,46 @@
 $schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
 name: Service Card
-status: obsolete
+status: stable
 description: Card component for displaying service information with links
 props:
   type: object
   properties:
     theme:
-      type: string
+      type: ['string', 'null']
       title: Theme
       description: Theme variation (light or dark).
       enum:
         - light
         - dark
-
+      examples:
+        - light
     modifier_class:
-      type: string
+      type: ['string', 'null']
       title: Modifier Class
       description: Additional CSS classes.
-    links:
-      type: array
-      title: Links
-      description: Card links.
-      items:
-        type: object
-        properties:
-          text:
-            type: string
-            title: Text
-            description: Link text.
-          url:
-            type: string
-            title: URL
-            description: Link URL.
-          is_new_window:
-            type: boolean
-            title: New Window
-            description: Whether to open the link in a new window.
-          is_external:
-            type: boolean
-            title: External
-            description: Whether the link is external.
+    # links:
+    #   type: array
+    #   title: Links
+    #   description: Card links.
+    #   items:
+    #     type: object
+    #     properties:
+    #       text:
+    #         type: string
+    #         title: Text
+    #         description: Link text.
+    #       url:
+    #         type: string
+    #         title: URL
+    #         description: Link URL.
+    #       is_new_window:
+    #         type: boolean
+    #         title: New Window
+    #         description: Whether to open the link in a new window.
+    #       is_external:
+    #         type: boolean
+    #         title: External
+    #         description: Whether the link is external.
 slots:
   content_top:
     title: Content Top
